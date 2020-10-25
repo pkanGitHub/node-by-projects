@@ -1,9 +1,16 @@
 const path = require('path')
 const express = require('express')
+const hbs = require('hbs')// for partials
 
 const app = express()
 
+const viewsPath = path.join(__dirname, '../templates/views') //use this when your views folder isn't call views
+const partialsPath = path.join(__dirname, '../templates/partials')
+
 app.set('view engine', 'hbs')
+app.set('views', viewsPath)
+hbs.registerPartials(partialsPath)
+
 app.use(express.static(path.join(__dirname, '../public')))
 
 app.get('', (req, res) => {
@@ -23,6 +30,7 @@ app.get('/about', (req, res) => {
 app.get('/help', (req, res) => {
     res.render('help', {
         title: 'Help page',
+        name: 'Sora',
         description: 'Whatever you need help with'
     })
 })
