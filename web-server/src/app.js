@@ -38,6 +38,23 @@ app.get('/weather', (req, res) => {
     res.send('Hello from weather page!')
 })
 
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        title: '404 Help',
+        name: 'Sora',
+        errorMessage: 'Help article not found'
+    })
+})
+
+app.get('*', (req, res) => {
+    // should come up last because of how express handle order
+    res.render('404', {
+        title: '404',
+        name: 'Sora',
+        errorMessage: 'Page not found'
+    })
+})
+
 app.listen(3000, () => {
     console.log('Server started')
 })
