@@ -17,16 +17,28 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true, useNewUrlParser: 
 
     const db = client.db(databaseName)
 
-    db.collection('tasks').findOne({ _id: new ObjectID("5fb30c37438e9496d7234552") }, (error, task) => {
-        if (error) {
-            return console.log('Unable to fetch')
+    // db.collection('users').updateOne({
+    //     _id: new ObjectID("5fb30698f4aee7954de01243")
+    // }, {
+    //     $inc: {
+    //         age: 1
+    //     }
+    // }).then((result) => {
+    //     console.log(result)
+    // }).catch((error) => {
+    //     console.log(error)
+    // })
+
+    db.collection('tasks').updateMany({
+        completed: false
+    }, {
+        $set: {
+            completed: true
         }
-
-        console.log(task)
-    })
-
-    db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
-        console.log(tasks)
+    }).then((result) => {
+        console.log(result)
+    }).catch((error) => {
+        console.log(error)
     })
 
 
@@ -37,4 +49,5 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true, useNewUrlParser: 
     // <read>
     // findOne
     // find (for multiple).toArray
+    // updateOne (using update operator)
 })
