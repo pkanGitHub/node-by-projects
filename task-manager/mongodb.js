@@ -2,6 +2,10 @@
 // const MongoClient = mongodb.MongoClient
 // const ObjectID = mongodb.ObjectID
 
+// ---------------------
+// not connected to anything else in the project
+// ---------------------
+
 const { MongoClient, ObjectID } = require('mongodb') // destructure way
 
 const connectionURL = 'mongodb://127.0.0.1:27017'
