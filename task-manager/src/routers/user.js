@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require('../models/user')
+const auth = require('../middleware/authentication')
 const router = new express.Router()
 
 // public use
@@ -28,15 +29,12 @@ router.post('/users/login', async (req, res) => {
 })
 
 // private use
-router.get('/users', async (req, res) => {
-    try {
-        const users = await User.find({})
-        res.send(users)
-    } catch (e) {
-        res.status(500).send()
-    }
+// read users
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user)
 })
 
+// read user
 router.get('/users/:id', async (req, res) => {
     const _id = req.params.id
 
@@ -51,6 +49,7 @@ router.get('/users/:id', async (req, res) => {
     }
 })
 
+//update user
 router.patch('/users/:id', async (req, res) => {
     const updates = Object.keys(req.body)
     const allowUpdates = ['name', 'email', 'password', 'age']
@@ -82,6 +81,7 @@ router.patch('/users/:id', async (req, res) => {
     }
 })
 
+// delete user
 router.delete('/users/:id', async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id)
