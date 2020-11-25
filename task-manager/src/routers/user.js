@@ -4,6 +4,7 @@ const auth = require('../middleware/authentication')
 const router = new express.Router()
 
 // public use
+// Signup
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
 
@@ -17,6 +18,7 @@ router.post('/users', async (req, res) => {
     }
 })
 
+//Login
 router.post('/users/login', async (req, res) => {
     try {
         // findByCredentials and generateAuthToken is in model and can be name anything
@@ -25,6 +27,31 @@ router.post('/users/login', async (req, res) => {
         res.send({ user, token })
     } catch (e) {
         res.status(400).send()
+    }
+})
+
+// Logout
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token !== req.token
+        })
+        await req.user.save()
+
+        res.send()
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+// Logout all user
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = []
+        await req.user.save()
+        res.send()
+    } catch (e) {
+        res.status(500).send()
     }
 })
 
