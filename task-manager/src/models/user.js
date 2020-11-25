@@ -49,6 +49,20 @@ const userSchema = new mongoose.Schema({
         }
     }]
 })
+// for removing un-needed data that send back to user (e.g. password)
+// userSchema.methods.getPublicProfile = funct... // for option 1
+// below as for option 2 
+userSchema.methods.toJSON = function () {
+    const user = this
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject
+}
+
+
 // methods are accessible on instances (instance method)
 userSchema.methods.generateAuthToken = async function () {
     const user = this // not necessary
