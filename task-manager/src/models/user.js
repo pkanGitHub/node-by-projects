@@ -49,6 +49,14 @@ const userSchema = new mongoose.Schema({
         }
     }]
 })
+
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+
 // for removing un-needed data that send back to user (e.g. password)
 // userSchema.methods.getPublicProfile = funct... // for option 1
 // below as for option 2 
